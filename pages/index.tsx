@@ -23,6 +23,7 @@ export default function Home() {
             <p className="text-xl mt-4">Osmar Pérez Bautista</p>
             <p className="text-xl">Brandon Gómez Mérida</p>
             <p className="text-xl">Luis Ángel Hernández Ceciliano</p>
+            <p className="text-xl">Rodrigo Antonio Ruiz Hernandez</p>
             <br/>
             <p className="text-xl">Profesora: Jacqueline Arzate Gordillo</p>
             <p className="text-xl">Grupo: 3CV16</p>
