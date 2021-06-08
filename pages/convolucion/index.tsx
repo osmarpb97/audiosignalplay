@@ -36,7 +36,7 @@ export default function Convolucion() {
   const [sumAudioURL, setsumAudioURL] = useState(null)
 
   useEffect(() => {
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    window.AudioContext = window.AudioContext;
     const audioContext = new AudioContext();
     set_audio_context(audioContext)
   }, [])

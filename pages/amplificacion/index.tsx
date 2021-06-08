@@ -28,7 +28,7 @@ export default function Reflect() {
     const [input, set_input] = useState(2)
 
     useEffect(() => {
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        window.AudioContext = window.AudioContext;
         const audioContext = new AudioContext();
         set_audio_context(audioContext)
     }, [])
