@@ -1,9 +1,4 @@
 import React, { Component } from "react";
-import microphone from './../imgs/microphone.svg';
-import stopIcon from './../imgs/stop.png';
-import pauseIcons from './../imgs/pause.png';
-import playIcons from './../imgs/play-button.png';
-import closeIcons from './../imgs/close.png';
 import styles from '../styles.module.css';
 const audioType = "audio/*";
 

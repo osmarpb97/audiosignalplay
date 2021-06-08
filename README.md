@@ -35,12 +35,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 ## Basic operations of the signals
-sum/subtraction
-amplification/attenuation
-reflection
-displacement
-subsampling
-zero interpolation
-step interpolation
-linear interpolation
-convolution
+Sum/subtraction.
+Amplification/attenuation.
+Reflection.
+Displacement.
+Subsampling.
+Zero interpolation.
+Step interpolation.
+Linear interpolation.
+Convolution.
