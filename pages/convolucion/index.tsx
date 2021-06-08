@@ -4,8 +4,9 @@ import { Recorder } from 'module/index'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { convolution } from 'lib/array'
 import Navbar from 'components/navbar'
+import audioBufferToWav from 'lib/audio_to_wav'
 
-export default function Convolucion() {
+export default function Suma() {
 
   const [first_file, set_first_file] = useState({
     url: null,
@@ -41,6 +42,11 @@ export default function Convolucion() {
     set_audio_context(audioContext)
   }, [])
 
+  useEffect(() => {
+    console.log("algo");
+    if (signal != null && signal2 != null) { sumSignal(); }
+  }, [signal, signal2])
+
   const visualizeAudio = (url, set, set_s) => {
     fetch(url)
       .then(response => response.arrayBuffer())
@@ -58,14 +64,17 @@ export default function Convolucion() {
     var sumBuffer = audio_context.createBuffer(1, audio_context.sampleRate * total_time, audio_context.sampleRate);
     var sum_chanel = sumBuffer.getChannelData(0);
 
-    var rawSum = convolution(raw_signal_1, raw_signal_2)
+    var rawSum = convolution( raw_signal_1, raw_signal_2)
     for (var i = 0; i < rawSum.length; i++) {
       sum_chanel[i] = rawSum[i]
     }
-    var source = audio_context.createBufferSource();
-    source.buffer = sumBuffer;
-    source.connect(audio_context.destination);
-    source.start();
+    var anotherArray = new Float32Array(sum_chanel);
+    // var source = audio_context.createBufferSource();
+    // source.buffer = sumBuffer;
+    // source.connect(audio_context.destination);
+    setsumAudioURL(URL.createObjectURL(new Blob([audioBufferToWav(sumBuffer)], { type: "audio/wav" })))
+
+    // source.start();
     set_suma(filterData(sumBuffer))
   }
 
@@ -84,6 +93,7 @@ export default function Convolucion() {
   const handleAudioStop = (data, set, set_s) => {
     set({ data });
     visualizeAudio(data.url, set, set_s);
+    setsumAudioURL(null);
   }
 
   const handleRest = (set) => {
@@ -99,7 +109,7 @@ export default function Convolucion() {
     }
     set(reset);
   }
-  if (signal != null && signal2 != null && suma == null) { sumSignal(); }
+
   return (
     <div style={{ backgroundColor: "#212121" }} className="text-center flex items-center justify-center h-screen">
       <Head>
@@ -110,6 +120,7 @@ export default function Convolucion() {
       <Navbar />
       <div className="w-full flex">
         <div className=" w-6/12">
+          <h1 className="text-white text-2xl">Señal A</h1>
           <LineChart
             style={{ margin: "0 auto" }}
             width={500}
@@ -138,7 +149,9 @@ export default function Convolucion() {
           />
 
         </div>
+        <h1 className="text-white text-2xl">conv</h1>
         <div className="w-6/12">
+          <h1 className="text-white text-2xl">Señal B</h1>
           <LineChart
             style={{ margin: "0 auto" }}
             width={500}
@@ -167,31 +180,33 @@ export default function Convolucion() {
           />
         </div>
       </div>
+      <h1 className="text-white text-2xl">=</h1>
+      <div className="flex flex-col items-center">
+        <LineChart
+          width={500}
+          height={300}
+          data={suma}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <Tooltip />
+          <Legend />
+          <YAxis />
+          <Line type="monotone" dataKey="sample" stroke="#8884d8" dot={false} />
+        </LineChart>
 
-      <LineChart
-        width={500}
-        height={300}
-        data={suma}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <Tooltip />
-        <Legend />
-        <YAxis />
-        <Line type="monotone" dataKey="sample" stroke="#8884d8" dot={false} />
-      </LineChart>
-
-      <div>
-        {sumAudioURL !== null ? (
-          <audio controls>
-            <source src={sumAudioURL} type="audio/ogg" />
-            <source src={sumAudioURL} type="audio/mpeg" />
-          </audio>
-        ) : null}
+        <div className="mt-10">
+          {sumAudioURL !== null ? (
+            <audio controls autoPlay>
+              <source src={sumAudioURL} type="audio/ogg" />
+              <source src={sumAudioURL} type="audio/mpeg" />
+            </audio>
+          ) : null}
+        </div>
       </div>
     </div>
   )
